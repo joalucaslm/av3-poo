@@ -124,6 +124,21 @@ public class AplicativoCadastro {
         }
     }
 
+    private static void salvarDadosEmArquivo() {
+        try (FileWriter writer = new FileWriter("bonus_funcionarios.txt")) { // CRIA O ARQUIVO TXT COM NOME, CARGO, SALARIO, DEPENDENTES E BONUS
+            for (Funcionario funcionario : funcionarios) {
+                double bonus = funcionario.calcularBonus();
+                writer.write("Nome: " + funcionario.getNome() +
+                        ", Cargo: " + funcionario.getCargo() +
+                        ", Salário: R$ " + funcionario.getSalario() +
+                        ", Dependentes: " + funcionario.getDependentes().size() +
+                        ", Bônus: R$ " + bonus + "\n");
+            }
+            JOptionPane.showMessageDialog(null, "Dados salvos no arquivo bonus_funcionarios.txt com sucesso!");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar dados no arquivo: " + e.getMessage());
+        }
+    }
     private static void cadastrarFuncionario() {
         try {
             int codigo = Integer.parseInt(JOptionPane.showInputDialog("Número do funcionário (código):"));
@@ -212,4 +227,4 @@ public class AplicativoCadastro {
         }
     }
 
-}   
+}

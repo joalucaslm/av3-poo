@@ -1,1 +1,2 @@
-Nome: kluca, Dependentes: 10, Bônus: R$ 4000000.0
+Nome: João Lucas, Cargo: DEV, Salário: R$ 2000.0, Dependentes: 2, Bônus: R$ 80.0
+Nome: Ana Luiza, Cargo: Enfermeira, Salário: R$ 4000.0, Dependentes: 0, Bônus: R$ 0.0
