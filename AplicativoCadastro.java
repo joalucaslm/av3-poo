@@ -95,7 +95,8 @@ public class AplicativoCadastro {
 
     public static void main(String[] args) {
         while (true) {
-            String[] opcoes = {"Cadastrar funcionário", "Mostrar bônus mensal de cada funcionário", "Sair"};
+            String[] opcoes = {"Cadastrar funcionário", "Mostrar bônus mensal de cada funcionário",
+                    "Excluir funcionário", "Alterar salário de funcionário", "Sair"};
             int opcao = JOptionPane.showOptionDialog(null, "Escolha uma opção:", "Menu",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
 
@@ -107,12 +108,19 @@ public class AplicativoCadastro {
                     mostrarBonusMensal();
                     break;
                 case 2:
+                    excluirFuncionario();
+                    break;
+                case 3:
+                    alterarSalarioFuncionario();
+                    break;
+                case 4:
                     salvarDadosEmArquivo();
                     JOptionPane.showMessageDialog(null, "Saindo...");
                     return;
                 default:
                     JOptionPane.showMessageDialog(null, "Opção inválida!");
             }
+
         }
     }
 
@@ -156,15 +164,52 @@ public class AplicativoCadastro {
         JOptionPane.showMessageDialog(null, mensagem.toString());
     }
 
-    private static void salvarDadosEmArquivo() {
-        try (FileWriter writer = new FileWriter("bonus_funcionarios.txt")) {
-            for (Funcionario funcionario : funcionarios) {
-                double bonus = funcionario.calcularBonus();
-                writer.write("Nome: " + funcionario.getNome() + ", Dependentes: " + funcionario.getDependentes().size() + ", Bônus: R$ " + bonus + "\n");
+
+    private static void excluirFuncionario() {
+        try {
+            int codigo = Integer.parseInt(JOptionPane.showInputDialog("Informe o código do funcionário que deseja excluir:"));
+
+            Funcionario funcionarioEncontrado = null;
+            for (Funcionario func : funcionarios) {
+                if (func.getCodigo() == codigo) {
+                    funcionarioEncontrado = func;
+                    break;
+                }
             }
-            JOptionPane.showMessageDialog(null, "Dados salvos no arquivo bonus_funcionarios.txt");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar dados no arquivo: " + e.getMessage());
+
+            if (funcionarioEncontrado != null) {
+                funcionarios.remove(funcionarioEncontrado);
+                JOptionPane.showMessageDialog(null, "Funcionário e seus dependentes excluídos com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Funcionário Inexistente."); // Se o código estiver incorreto
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Entrada inválida. Informe um código numérico válido.");
         }
     }
-}
+
+    private static void alterarSalarioFuncionario() {
+        try {
+            int codigo = Integer.parseInt(JOptionPane.showInputDialog("Informe o código do funcionário cujo salário deseja alterar:"));
+
+            Funcionario funcionarioEncontrado = null;
+            for (Funcionario func : funcionarios) {
+                if (func.getCodigo() == codigo) {
+                    funcionarioEncontrado = func;
+                    break;
+                }
+            }
+
+            if (funcionarioEncontrado != null) {
+                double novoSalario = Double.parseDouble(JOptionPane.showInputDialog("Informe o novo salário para " + funcionarioEncontrado.getNome() + ":"));
+                funcionarioEncontrado.setSalario(novoSalario); // Altera pelo setSalario
+                JOptionPane.showMessageDialog(null, "Salário atualizado com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Funcionário Inexistente.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Entrada inválida. Informe valores numéricos válidos.");
+        }
+    }
+
+}   
